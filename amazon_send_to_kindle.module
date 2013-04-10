@@ -1,0 +1,8 @@
+<?php
+
+/*
+ * @file
+ * Module file for the Amazon send to kindle module.
+ * This module will integrate the Send to kindle button provided by the www.amazon.com
+ * 
+ */
