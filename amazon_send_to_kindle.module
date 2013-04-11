@@ -81,7 +81,38 @@ function send_to_kindle_admin_settings($form, $form_state) {
 		'#type' => 'textfield',
 		'#title' => t('Javascript'),
 		'#description' => t('Paste here the Javascript code provided by the Send to kindle button. You can get the button @here.', array('@here' => 'http://www.amazon.com/gp/sendtokindle/developers/button')),
-		'#default_value' => variable_get('send_to_kindle_js', 'Social'),
+		'#default_value' => variable_get('send_to_kindle_js', NULL),
+	);
+	$form['send_to_kindle_html'] = array(
+		'#type' => 'textfield',
+		'#title' => t('HTML code for Send to Kindle Button'),
+		'#description' => t('Paste here the HTML code provided by the Send to kindle button. You can get the button @here.', array('@here' => 'http://www.amazon.com/gp/sendtokindle/developers/button')),
+		'#default_value' => variable_get('send_to_kindle_html', NULL),
 	);
 	return system_settings_form($form);
+}
+
+/**
+ * Implementation of hook_node_view().
+ */
+function beacon9_social_node_view($node, $view_mode = 'full', $langcode = NULL){
+	$contentTypes = variable_get('send_to_kindle_nodes', array());
+	$nodeTypes = variable_get('send_to_kindle_node_type', 'full');
+
+	if($contentTypes[$node->type] != null && ($nodeTypes == $view_mode || $nodeTypes == 'both')){
+		$url = url(drupal_lookup_path('alias', 'node/' . $node->nid), array('absolute' => TRUE));
+		if(!$url) {
+			$url = url('node/'.$node->nid, array('absolute' => TRUE));
+		}
+		$url_encoded = urlencode($url);
+		
+		// Append the HTML given by the Amazon here.
+		// We are fetching from the text area variable which we stored during module configuration.
+		// Assign the HTML with the node render content.
+		$output = variable_get('send_to_kindle_html', NULL);
+		$node->content['amazon-send-to-kindle'] = array(
+			'#markup' => $output,
+			'#weight' => 20,
+		);
+	}
 }
