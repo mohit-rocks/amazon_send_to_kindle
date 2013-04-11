@@ -77,12 +77,6 @@ function send_to_kindle_admin_settings($form, $form_state) {
 		'#default_value' => variable_get('send_to_kindle_node_type', 'full'),
 		'#options' => array('full' => 'Full Node', 'teaser' => 'Teaser', 'both' => 'Full Nodes and Teasers'),
 	);
-	$form['send_to_kindle_javascript'] = array(
-		'#type' => 'textfield',
-		'#title' => t('Javascript'),
-		'#description' => t('Paste here the Javascript code provided by the Send to kindle button. You can get the button @here.', array('@here' => 'http://www.amazon.com/gp/sendtokindle/developers/button')),
-		'#default_value' => variable_get('send_to_kindle_js', NULL),
-	);
 	$form['send_to_kindle_html'] = array(
 		'#type' => 'textfield',
 		'#title' => t('HTML code for Send to Kindle Button'),
