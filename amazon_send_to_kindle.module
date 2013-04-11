@@ -1,8 +1,87 @@
 <?php
 
-/*
+/**
  * @file
  * Module file for the Amazon send to kindle module.
  * This module will integrate the Send to kindle button provided by the www.amazon.com
  * 
  */
+/**
+ * Implementstion of hook_init().
+ */
+function amazon_send_to_kindle_init() {
+	// Add widget.js file from the amazon cloud front.
+	drupal_add_js('https://d1xnn692s7u6t6.cloudfront.net/widget.js', 'external');
+	
+	// Add the javascript
+	drupal_add_js('(function k(){
+						window.$SendToKindle&&window.$SendToKindle.Widget?$SendToKindle.Widget.init({}):setTimeout(k,500);
+						})();', 'inline');
+}
+/**
+ * Implementation of hook_permission().
+ */
+function amazon_send_to_kindle_permission() {
+	return array(
+		'administer amazon send to kindle ' => array(
+				'title' => t('Administer Amazon Send to Kindle Button.'),
+				'description' => t('Perform administration tasks for amazon send to kindle button.'),
+		),
+	);
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function amazon_send_to_kindle_menu() {
+	$items['admin/config/social'] = array(
+		'title' => t('Social'),
+		'description' => t('Manage how your site interacts with Social Networks'),
+		'position' => 'right',
+		'page callback' => 'system_admin_menu_block_page',
+		'access arguments' => array('access administration pages'),
+		'file' => 'system.admin.inc',
+		'file path' => drupal_get_path('module', 'system'),
+	);
+	$items['admin/config/social/send_to_kindle'] = array(
+		'title' => t('Amazon Send to Kindle Integration.'),
+		'description' => t('Administer Amazon Send to Kindle button.'),
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('send_to_kindle_admin_settings'),
+ 		'access arguments' => array('administer send to kindle'),
+		'type' => MENU_NORMAL_ITEM,
+	);
+	return $items;
+}
+
+/**
+ * Implementation of system_settings_form().
+ */
+function send_to_kindle_admin_settings($form, $form_state) {
+	$nodeTypes = node_type_get_types();
+	$options = array();
+	foreach ($nodeTypes as $k => $v) {
+		$options[$k] = $v->name;
+	}
+	$form['send_to_kindle_nodes'] = array(
+		'#type' => 'checkboxes',
+		'#title' => t('Content Types'),
+		'#description' => t('Which content types to enable the send to kindle buttons for.'),
+		'#default_value' => variable_get('send_to_kindle_nodes', array()),
+		'#options' => $options,
+	);
+	$form['send_to_kindle_node_type'] = array(
+		'#type' => 'radios',
+		'#title' => t('Node Type'),
+		'#description' => t('The type of node that the buttons should be displayed on.'),
+		'#default_value' => variable_get('send_to_kindle_node_type', 'full'),
+		'#options' => array('full' => 'Full Node', 'teaser' => 'Teaser', 'both' => 'Full Nodes and Teasers'),
+	);
+	$form['send_to_kindle_javascript'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Javascript'),
+		'#description' => t('Paste here the Javascript code provided by the Send to kindle button. You can get the button @here.', array('@here' => 'http://www.amazon.com/gp/sendtokindle/developers/button')),
+		'#default_value' => variable_get('send_to_kindle_js', 'Social'),
+	);
+	return system_settings_form($form);
+}
