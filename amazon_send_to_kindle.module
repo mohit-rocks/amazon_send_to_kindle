@@ -78,7 +78,7 @@ function send_to_kindle_admin_settings($form, $form_state) {
 		'#options' => array('full' => 'Full Node', 'teaser' => 'Teaser', 'both' => 'Full Nodes and Teasers'),
 	);
 	$form['send_to_kindle_html'] = array(
-		'#type' => 'textfield',
+		'#type' => 'textarea',
 		'#title' => t('HTML code for Send to Kindle Button'),
 		'#description' => t('Paste here the HTML code provided by the Send to kindle button. You can get the button @here.', array('@here' => 'http://www.amazon.com/gp/sendtokindle/developers/button')),
 		'#default_value' => variable_get('send_to_kindle_html', NULL),
@@ -89,7 +89,7 @@ function send_to_kindle_admin_settings($form, $form_state) {
 /**
  * Implementation of hook_node_view().
  */
-function beacon9_social_node_view($node, $view_mode = 'full', $langcode = NULL){
+function amazon_send_to_kindle_node_view($node, $view_mode = 'full', $langcode = NULL){
 	$contentTypes = variable_get('send_to_kindle_nodes', array());
 	$nodeTypes = variable_get('send_to_kindle_node_type', 'full');
 
