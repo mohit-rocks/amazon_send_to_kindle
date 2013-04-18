@@ -13,16 +13,13 @@ function amazon_send_to_kindle_init() {
 	// Add widget.js file from the amazon cloud front.
 	drupal_add_js('https://d1xnn692s7u6t6.cloudfront.net/widget.js', 'external');
 	
-	// Add the javascript
-	/* drupal_add_js('(function k(){
-						window.$SendToKindle&&window.$SendToKindle.Widget?$SendToKindle.Widget.init({}):setTimeout(k,500);
-						})();', 'inline'); */
+	// Include the javascript file provided by the Amazon
 	drupal_add_js(drupal_get_path('module', 'amazon_send_to_kindle') .'/amazon_send_to_kindle.js', 'file');
 }
 /**
  * Implementation of hook_permission().
  */
-function amazon_send_to_kindle_permission() {
+function amazon_send_to_kindle_ipermission() {
 	return array(
 		'administer amazon send to kindle ' => array(
 				'title' => t('Administer Amazon Send to Kindle Button.'),
