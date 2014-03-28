@@ -1,4 +1,5 @@
 name = Amazon Send to Kindle
-description = This module will add the send to kindle button on the content type pages.
+description = This module will add the send to kindle button on the content type
+pages.
 package = Social
 core = 7.x

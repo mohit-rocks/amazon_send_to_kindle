@@ -1,0 +1,21 @@
+<?php
+/**
+ * @file
+ * Installation for OpenSource core objects.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function amazon_send_to_kindle_uninstall() {
+  variable_del('amazon_send_to_kindle_button_type');
+  variable_del('amazon_send_to_kindle_html');
+  variable_del('amazon_send_to_kindle_button_border');
+  variable_del('amazon_send_to_kindle_button_text');
+  variable_del('amazon_send_to_kindle_button_font');
+  variable_del('amazon_send_to_kindle_icon_color');
+  variable_del('amazon_send_to_kindle_icon_size');
+  variable_del('amazon_send_to_kindle_icon_theme');
+  variable_del('amazon_send_to_kindle_node_type');
+  variable_del('amazon_send_to_kindle_nodes');
+}
