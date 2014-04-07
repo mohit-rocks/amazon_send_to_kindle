@@ -35,7 +35,7 @@ function amazon_send_to_kindle_menu() {
     'description' => 'Manage how your site interacts with Social Networks',
     'position' => 'right',
     'page callback' => 'system_admin_menu_block_page',
-    'access arguments' => array('access administration pages'),
+    'access arguments' => array('administer site configuration'),
     'file' => 'system.admin.inc',
     'file path' => drupal_get_path('module', 'system'),
   );
@@ -43,7 +43,7 @@ function amazon_send_to_kindle_menu() {
     'title' => 'Amazon Send to Kindle Integration.',
     'description' => 'Administer Amazon Send to Kindle button.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('send_to_kindle_admin_settings'),
+    'page arguments' => array('amazon_send_to_kindle_admin_settings'),
     'access arguments' => array('administer send to kindle'),
     'type' => MENU_NORMAL_ITEM,
   );
@@ -53,7 +53,7 @@ function amazon_send_to_kindle_menu() {
 /**
  * Implementation of system_settings_form().
  */
-function send_to_kindle_admin_settings($form, $form_state) {
+function amazon_send_to_kindle_admin_settings($form, $form_state) {
   $node_types = node_type_get_types();
   $options = array();
   foreach ($node_types as $k => $v) {
