@@ -17,7 +17,7 @@ function amazon_send_to_kindle_init() {
 /**
  * Implements hook_permission().
  */
-function amazon_send_to_kindle_ipermission() {
+function amazon_send_to_kindle_permission() {
   return array(
     'administer amazon send to kindle ' => array(
       'title' => t('Administer Amazon Send to Kindle Button.'),
@@ -155,8 +155,9 @@ function amazon_send_to_kindle_node_view($node, $view_mode = 'full', $langcode =
   $node_types = variable_get('amazon_send_to_kindle_node_type', 'full');
 
   // Include the javascript file provided by the Amazon.
-  drupal_add_js(drupal_get_path('module', 'amazon_send_to_kindle') . '/amazon_send_to_kindle.js', 'file');
-  drupal_add_css(drupal_get_path('module', 'amazon_send_to_kindle') . '/kindle.css');
+  $module_path = drupal_get_path('module', 'amazon_send_to_kindle');
+  drupal_add_js( $module_path . '/amazon_send_to_kindle.js', 'file');
+  drupal_add_css( $module_path . '/kindle.css');
 
   if ($content_types[$node->type] != NULL && ($node_types == $view_mode || $node_types == 'both')) {
     $url = url(drupal_lookup_path('alias', 'node/' . $node->nid), array('absolute' => TRUE));
@@ -171,7 +172,7 @@ function amazon_send_to_kindle_node_view($node, $view_mode = 'full', $langcode =
       $output = variable_get('amazon_send_to_kindle_html', NULL);
     }
     else {
-      $output = _amazon_send_to_kindle_get_html();
+      $output = _amazon_send_to_kindle_get_html($module_path);
     }
     $node->content['amazon-send-to-kindle'] = array(
       '#markup' => $output,
@@ -183,7 +184,7 @@ function amazon_send_to_kindle_node_view($node, $view_mode = 'full', $langcode =
 /**
  * This function will generate the html code for the kindle button.
  */
-function _amazon_send_to_kindle_get_html() {
+function _amazon_send_to_kindle_get_html($module_path) {
   global $base_url;
   $html = "<div class='kindleWidget";
   if (variable_get('amazon_send_to_kindle_button_border', 0)) {
@@ -195,7 +196,7 @@ function _amazon_send_to_kindle_get_html() {
   }
   $html .= ">";
   // Button icon.
-  $html .= '<img src="' . $base_url . '/' . drupal_get_path('module', 'amazon_send_to_kindle') . '/images/';
+  $html .= '<img src="' . $base_url . '/' . $module_path . '/images/';
   $html .= variable_get('amazon_send_to_kindle_icon_color', 0) == 0 ? 'black' : 'white';
   $html .= variable_get('amazon_send_to_kindle_icon_size', 0) == 0 ? '-25' : '-15';
   $html .= '.png" />';
