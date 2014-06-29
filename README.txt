@@ -1,4 +1,3 @@
-
 Welcome to Amazon Send to Kindle module.
 
 This module will add send to kindle button on the selected content types.
